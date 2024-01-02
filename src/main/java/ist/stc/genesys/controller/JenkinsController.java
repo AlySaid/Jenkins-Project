@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class JenkinsController {
 	@GetMapping("/jenkins")
 	public String jenkins() {
-		return "Welcome to jenkins course !!!    V 1.2";
+		return "Welcome to jenkins course !!!    V 5";
 	}
 }
