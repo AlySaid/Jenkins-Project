@@ -1,36 +1,45 @@
 pipeline {
     agent any
- 
+    
+    environment {
+        TOMCAT_HOST = '172.23.179.44'
+        TOMCAT_PORT = '22'
+        TOMCAT_USER = 'aly'
+        TOMCAT_PASSWORD = 'aly'
+        WAR_FILE = 'JenkinsProject.war'
+        TOMCAT_WEBAPPS_PATH = '/app/apache-tomcat-10.1.17/webapps'
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                // Build your Spring Boot application using Maven
-                echo 'Runing Build Automation'
-                sh 'mvn clean package'
+                checkout scm
             }
         }
 
-  
-
-        stage('Deploy') {
-             when {
-                branch 'main'
-            }
+        stage('Deploy to Tomcat') {
             steps {
-                //Use below line to ask before proceeding to deploy, you need to hoover on deploy box to proceed.
-               
-                // Use the Publish Over SSH plugin to transfer the JAR file to the deployment server
-                sshPublisher(publishers: [
-                    sshPublisherDesc(configName: 'alysshserver', transfers: [
-                        sshTransfer(execCommand: '' ,
-                                    execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/app/apache-tomcat-10.1.17/webapps', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')
-                    ])
-                ])
+                script {
+                    // Copy the WAR file to the remote Tomcat server
+                    sshagent(['alysshserver']) {
+                        sh "scp -P ${TOMCAT_PORT} ${WAR_FILE} ${TOMCAT_USER}@${TOMCAT_HOST}:${TOMCAT_WEBAPPS_PATH}"
+                    }
+
+                    // Restart Tomcat to deploy the WAR
+                    sshagent(['alysshserver']) {
+                        sh "ssh -p ${TOMCAT_PORT} ${TOMCAT_USER}@${TOMCAT_HOST} 'cd ${TOMCAT_WEBAPPS_PATH} && rm -rf JenkinsProject && unzip ${WAR_FILE} -d JenkinsProject'"
+                    }
+                }
             }
         }
+    }
 
-       
-
-
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
     }
 }
