@@ -23,7 +23,7 @@ pipeline {
                 sshPublisher(publishers: [
                     sshPublisherDesc(configName: 'alysshserver', transfers: [
                         sshTransfer(execCommand: '' ,
-                                    execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/app/apache-tomcat-10.1.17/webapps', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')
+                                    execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/app/apache-tomcat-10.1.17/webapps/', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')
                     ])
                 ])
             }
