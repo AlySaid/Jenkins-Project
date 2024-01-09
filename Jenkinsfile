@@ -1,7 +1,7 @@
 pipeline {
     agent any
      
-    stages {
+    stages { 
         stage('Build') {
             steps {
                 // Build your Spring Boot application using Maven
