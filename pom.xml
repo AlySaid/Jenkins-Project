@@ -22,6 +22,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+<!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
+<!-- <dependency> -->
+<!--     <groupId>io.confluent</groupId> -->
+<!--     <artifactId>kafka-avro-serializer</artifactId> -->
+<!--     <version>7.5.1</version> -->
+<!-- </dependency> -->
+
+
+<!-- <repositories> -->
+<!--     <repository> -->
+<!--         <id>confluent</id> -->
+<!--         <url>https://packages.confluent.io/maven/</url> -->
+<!--     </repository> -->
+<!-- </repositories> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
